@@ -4,14 +4,18 @@ import junit.framework.TestCase;
 import org.mvel.CompiledExpression;
 import org.mvel.ExpressionCompiler;
 import org.mvel.MVEL;
+import static org.mvel.MVEL.compileExpression;
+import static org.mvel.MVEL.executeExpression;
 import org.mvel.ParserContext;
-import org.mvel.debug.DebugTools;
+import static org.mvel.debug.DebugTools.decompile;
 import org.mvel.integration.impl.MapVariableResolverFactory;
-import org.mvel.optimizers.OptimizerFactory;
+import static org.mvel.optimizers.OptimizerFactory.setDefaultOptimizer;
 import org.mvel.tests.main.res.*;
 import org.mvel.util.StringAppender;
 
 import java.io.*;
+import static java.lang.Integer.parseInt;
+import static java.lang.System.getProperty;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
@@ -75,8 +79,8 @@ public abstract class AbstractTest extends TestCase {
         if (Boolean.getBoolean("mvel.tests.quick")) {
             threads = new Thread[1];
         }
-        else if (System.getProperty("mvel.tests.threadcount") != null) {
-            threads = new Thread[Integer.parseInt(System.getProperty("mvel.tests.threadcount"))];
+        else if (getProperty("mvel.tests.threadcount") != null) {
+            threads = new Thread[parseInt(getProperty("mvel.tests.threadcount"))];
         }
         else {
             threads = new Thread[5];
@@ -164,10 +168,10 @@ public abstract class AbstractTest extends TestCase {
 
         if (!Boolean.getBoolean("mvel.disable.jit")) {
 
-            OptimizerFactory.setDefaultOptimizer("ASM");
+            setDefaultOptimizer("ASM");
 
             try {
-                first = MVEL.executeExpression(compiled, base, map);
+                first = executeExpression(compiled, base, map);
 
             }
             catch (Exception e) {
@@ -181,7 +185,7 @@ public abstract class AbstractTest extends TestCase {
             }
 
             try {
-                second = MVEL.executeExpression(compiled, base, map);
+                second = executeExpression(compiled, base, map);
             }
             catch (Exception e) {
                 if (failErrors == null) failErrors = new StringAppender();
@@ -224,11 +228,11 @@ public abstract class AbstractTest extends TestCase {
             }
         }
 
-        OptimizerFactory.setDefaultOptimizer("reflective");
-        Serializable compiled2 = MVEL.compileExpression(ex);
+        setDefaultOptimizer("reflective");
+        Serializable compiled2 = compileExpression(ex);
 
         try {
-            fourth = MVEL.executeExpression(compiled2, base, map);
+            fourth = executeExpression(compiled2, base, map);
         }
         catch (Exception e) {
             if (failErrors == null) failErrors = new StringAppender();
@@ -241,7 +245,7 @@ public abstract class AbstractTest extends TestCase {
         }
 
         try {
-            fifth = MVEL.executeExpression(compiled2, base, map);
+            fifth = executeExpression(compiled2, base, map);
         }
         catch (Exception e) {
             if (failErrors == null) failErrors = new StringAppender();
@@ -268,7 +272,7 @@ public abstract class AbstractTest extends TestCase {
         CompiledExpression compiledD = debuggingCompiler.compile(ctx);
 
         try {
-            sixth = MVEL.executeExpression(compiledD, base, map);
+            sixth = executeExpression(compiledD, base, map);
         }
         catch (Exception e) {
             if (failErrors == null) failErrors = new StringAppender();
@@ -284,11 +288,11 @@ public abstract class AbstractTest extends TestCase {
         if (sixth != null && !sixth.getClass().isArray()) {
             if (!fifth.equals(sixth)) {
                 System.out.println("Payload 1 -- No Symbols: ");
-                System.out.println(DebugTools.decompile(compiled));
+                System.out.println(decompile(compiled));
                 System.out.println();
 
                 System.out.println("Payload 2 -- With Symbols: ");
-                System.out.println(DebugTools.decompile(compiledD));
+                System.out.println(decompile(compiledD));
                 System.out.println();
 
                 throw new AssertionError("Different result from test 5 and 6 (Compiled to Compiled+DebuggingSymbols) [first: "
@@ -297,7 +301,7 @@ public abstract class AbstractTest extends TestCase {
         }
 
         try {
-            seventh = MVEL.executeExpression(compiledD, base, map);
+            seventh = executeExpression(compiledD, base, map);
         }
         catch (Exception e) {
             if (failErrors == null) failErrors = new StringAppender();
@@ -317,7 +321,7 @@ public abstract class AbstractTest extends TestCase {
         }
 
         try {
-            eighth = MVEL.executeExpression(serializationTest(compiledD), base, new MapVariableResolverFactory(map));
+            eighth = executeExpression(serializationTest(compiledD), base, new MapVariableResolverFactory(map));
         }
         catch (Exception e) {
             if (failErrors == null) failErrors = new StringAppender();
@@ -338,7 +342,7 @@ public abstract class AbstractTest extends TestCase {
 
 
         if (failErrors != null) {
-            System.out.println(DebugTools.decompile(compiledD));
+            System.out.println(decompile(compiledD));
             throw new AssertionError("Detailed Failure Report:\n" + failErrors.toString());
         }
 
