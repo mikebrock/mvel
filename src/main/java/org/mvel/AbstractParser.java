@@ -2,6 +2,7 @@ package org.mvel;
 
 import static org.mvel.Operator.*;
 import org.mvel.ast.*;
+import org.mvel.units.Units;
 import static org.mvel.util.ArrayTools.findFirst;
 import org.mvel.util.ExecutionStack;
 import static org.mvel.util.ParseTools.*;
@@ -124,6 +125,8 @@ public class AbstractParser implements Serializable {
                 throw new RuntimeException("cannot resolve a built-in literal", e);
             }
         }
+
+        //LITERALS.putAll(Units.MEASUREMENTS_ALL);
 
         _loadLanguageFeaturesByLevel(5);
     }
