@@ -20,7 +20,7 @@
 
     <target name="compile" depends="init"
             description="compile the source ">
-        <!-- Compile the java code from ${src} into ${build} debuglevel="vars,lines,source" -->
+        <!-- Compile the java code from ${src} into ${build} debugxlevel="vars,lines,source" -->
         <javac source="1.5" srcdir="${src}" destdir="${build}" optimize="true" debug="on"
                debuglevel="vars,lines,source">
             <classpath refid="classpath"/>
