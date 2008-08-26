@@ -670,7 +670,7 @@ public class ReflectiveAccessorOptimizer extends AbstractOptimizer implements Ac
 
     public Accessor optimizeCollection(char[] property, Object ctx, Object thisRef, VariableResolverFactory factory) {
         CollectionParser parser = new CollectionParser();
-        ctx = ((List) parser.parseCollection(property)).get(0);
+        ctx = ((List) parser.parseCollection(property, false)).get(0);
 
         Accessor root = _getAccessor(ctx);
         int end = parser.getCursor() + 2;

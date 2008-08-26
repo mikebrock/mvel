@@ -16,7 +16,7 @@ public class ExpressionCompiler extends AbstractParser {
     private ParserContext pCtx;
 
     public CompiledExpression compile() {
-        return compile(contextControl(GET_OR_CREATE, null, null));
+        return compile(contextControl(SET, new ParserContext(), null));
     }
 
     public CompiledExpression compile(ParserContext ctx) {

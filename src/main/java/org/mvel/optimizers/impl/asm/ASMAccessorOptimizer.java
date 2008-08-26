@@ -1659,7 +1659,7 @@ public class ASMAccessorOptimizer extends AbstractOptimizer implements AccessorO
         this.variableFactory = factory;
 
         CollectionParser parser = new CollectionParser();
-        Object o = ((List) parser.parseCollection(property)).get(0);
+        Object o = ((List) parser.parseCollection(property, false)).get(0);
 
         _initJIT();
 
