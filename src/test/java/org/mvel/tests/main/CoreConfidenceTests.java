@@ -2973,12 +2973,10 @@ public class CoreConfidenceTests extends AbstractTest {
             final Recipient other = (Recipient) obj;
             if (email == null) {
                 if (other.email != null) return false;
-            }
-            else if (!email.equals(other.email)) return false;
+            } else if (!email.equals(other.email)) return false;
             if (name == null) {
                 if (other.name != null) return false;
-            }
-            else if (!name.equals(other.name)) return false;
+            } else if (!name.equals(other.name)) return false;
             return true;
         }
 
@@ -3032,8 +3030,7 @@ public class CoreConfidenceTests extends AbstractTest {
             final Recipients other = (Recipients) obj;
             if (list == null) {
                 if (other.list != null) return false;
-            }
-            else if (!list.equals(other.list)) return false;
+            } else if (!list.equals(other.list)) return false;
             return true;
         }
 
@@ -3082,12 +3079,10 @@ public class CoreConfidenceTests extends AbstractTest {
             final EmailMessage other = (EmailMessage) obj;
             if (from == null) {
                 if (other.from != null) return false;
-            }
-            else if (!from.equals(other.from)) return false;
+            } else if (!from.equals(other.from)) return false;
             if (recipients == null) {
                 if (other.recipients != null) return false;
-            }
-            else if (!recipients.equals(other.recipients)) return false;
+            } else if (!recipients.equals(other.recipients)) return false;
             return true;
         }
 
@@ -3578,7 +3573,10 @@ public class CoreConfidenceTests extends AbstractTest {
         assertTrue(false);
     }
 
-
+    public void testAnalysisCompile() {
+        CompiledExpression ce = new ExpressionCompiler("foo.aValue = 'bar'").compile();
+        assertTrue(ce.getParserContext().getInputs().keySet().contains("foo"));
+    }
 }
 
 
