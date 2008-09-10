@@ -711,7 +711,8 @@ public class AbstractParser implements Serializable {
                             }
 
                         case '!': {
-                            if (isIdentifierPart(expr[++cursor]) || expr[cursor] == '(') {
+                            ++cursor;
+                            if (isIdentifierPart(expr[cursor = nextNonBlack()]) || expr[cursor] == '(') {
                                 start = cursor;
                                 fields |= ASTNode.NEGATION;
                                 continue;
@@ -1272,6 +1273,15 @@ public class AbstractParser implements Serializable {
         else {
             return expr[cursor + range];
         }
+    }
+
+    public int nextNonBlack() {
+        if ((cursor + 1) >= length) {
+            return -1;
+        }
+        int i = cursor;
+        while (i != length && isWhitespace(expr[i])) i++;
+        return i;
     }
 
     protected boolean isStatementManuallyTerminated() {
