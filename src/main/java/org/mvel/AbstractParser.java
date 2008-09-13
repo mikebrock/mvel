@@ -381,6 +381,13 @@ public class AbstractParser implements Serializable {
                                     captureToEOS();
                                     return lastNode = new AssignAdd(subArray(start, cursor), fields, name);
                                 }
+                                else if (isNext('-')) {
+                                    name = new String(expr, start, trimLeft(cursor) - start);
+                                    start = cursor += 2;
+                                    captureToEOS();
+                                    return lastNode = new AssignSub(subArray(start, cursor), fields, name);
+
+                                }
 
                                 if (greedy && !isNext('=')) {
                                     cursor++;
