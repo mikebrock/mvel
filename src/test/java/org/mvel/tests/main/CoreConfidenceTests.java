@@ -2973,10 +2973,12 @@ public class CoreConfidenceTests extends AbstractTest {
             final Recipient other = (Recipient) obj;
             if (email == null) {
                 if (other.email != null) return false;
-            } else if (!email.equals(other.email)) return false;
+            }
+            else if (!email.equals(other.email)) return false;
             if (name == null) {
                 if (other.name != null) return false;
-            } else if (!name.equals(other.name)) return false;
+            }
+            else if (!name.equals(other.name)) return false;
             return true;
         }
 
@@ -3030,7 +3032,8 @@ public class CoreConfidenceTests extends AbstractTest {
             final Recipients other = (Recipients) obj;
             if (list == null) {
                 if (other.list != null) return false;
-            } else if (!list.equals(other.list)) return false;
+            }
+            else if (!list.equals(other.list)) return false;
             return true;
         }
 
@@ -3079,10 +3082,12 @@ public class CoreConfidenceTests extends AbstractTest {
             final EmailMessage other = (EmailMessage) obj;
             if (from == null) {
                 if (other.from != null) return false;
-            } else if (!from.equals(other.from)) return false;
+            }
+            else if (!from.equals(other.from)) return false;
             if (recipients == null) {
                 if (other.recipients != null) return false;
-            } else if (!recipients.equals(other.recipients)) return false;
+            }
+            else if (!recipients.equals(other.recipients)) return false;
             return true;
         }
 
@@ -3577,6 +3582,39 @@ public class CoreConfidenceTests extends AbstractTest {
         CompiledExpression ce = new ExpressionCompiler("foo.aValue = 'bar'").compile();
         assertTrue(ce.getParserContext().getInputs().keySet().contains("foo"));
     }
+
+    public interface FooHolder {
+        public Foo getFoo();
+    }
+
+    public class FooHolderImpl {
+        private Foo foo = new Foo();
+
+        public Foo getFoo() {
+            return foo;
+        }
+    }
+
+    public class DerivedFooHolderImpl {
+        private Foo foo = new Foo();
+
+        public Foo getFoo() {
+            return foo;
+        }
+    }
+
+    public void testJIRA111() {
+        OptimizerFactory.setDefaultOptimizer("reflective");
+        Serializable compiled = MVEL.compileExpression("foo.bar.name");
+
+        Object obj = executeExpression(compiled, new FooHolderImpl());
+        assertEquals("dog", obj);
+
+        obj = executeExpression(compiled, new DerivedFooHolderImpl());
+        assertEquals("dog", obj);
+    }
+
+
 }
 
 
