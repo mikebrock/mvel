@@ -46,7 +46,12 @@ public class GetterAccessor implements AccessorNode {
             /**
              * HACK: Try to access this another way.
              */
-            return nextNode.getValue(MVEL.getProperty(method.getName() + "()", ctx), elCtx, vars);
+            if (nextNode != null) {
+                return nextNode.getValue(MVEL.getProperty(method.getName() + "()", ctx), elCtx, vars);
+            }
+            else {
+                return MVEL.getProperty(method.getName() + "()", ctx);
+            }
         }
         catch (Exception e) {
             throw new CompileException("cannot invoke getter: " + method.getName()
