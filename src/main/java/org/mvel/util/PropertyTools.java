@@ -111,14 +111,13 @@ public class PropertyTools {
     public static Member getFieldOrAccessor(Class clazz, String property) {
         if (property.charAt(property.length() - 1) == ')') return getGetter(clazz, property);
 
-        try {
-            Field fld = clazz.getField(property);
+        for (Field f : clazz.getFields()) {
+            if (property.equals(f.getName())) {
+                if ((f.getModifiers() & PUBLIC) != 0) return f;
+                break;
+            }
+        }
 
-            if ((fld.getModifiers() & PUBLIC) != 0) return fld;
-        }
-        catch (Exception e) {
-            // do nothing.
-        }
         return getGetter(clazz, property);
     }
 
@@ -336,7 +335,6 @@ public class PropertyTools {
         }
         return new String(s, start, end - start);
     }
-    
 
 
     public static boolean equals(char[] obj1, String obj2) {
