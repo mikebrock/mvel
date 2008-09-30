@@ -42,8 +42,8 @@ public class MVEL {
     static boolean DEBUG_FILE = getBoolean("mvel.debug.fileoutput");
     static String ADVANCED_DEBUGGING_FILE = System.getProperty("mvel.debugging.file") == null ? "mvel_debug.txt"
             : System.getProperty("mvel.debugging.file");
+
     static boolean ADVANCED_DEBUG = getBoolean("mvel.advanced_debugging");
-//    static boolean THREAD_SAFE = getBoolean("mvel.threadsafety");
     static boolean WEAK_CACHE = getBoolean("mvel.weak_caching");
     static boolean NO_JIT = getBoolean("mvel.disable.jit");
 
@@ -54,7 +54,7 @@ public class MVEL {
             OPTIMIZER = getBoolean("mvel.optimizer");
         }
     }
-    
+
     public static boolean isAdvancedDebugging() {
         return ADVANCED_DEBUG;
     }
@@ -192,6 +192,7 @@ public class MVEL {
         }
     }
 
+
     /**
      * Executes a compiled expression.
      *
@@ -326,6 +327,7 @@ public class MVEL {
             return convert(handleParserEgress(end.getValue(), false), toType);
         }
     }
+
 
     public static Object[] executeAllExpression(Serializable[] compiledExpressions, Object ctx, VariableResolverFactory vars) {
         if (compiledExpressions == null) return GetterAccessor.EMPTY;
