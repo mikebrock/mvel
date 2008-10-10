@@ -3614,6 +3614,20 @@ public class CoreConfidenceTests extends AbstractTest {
         assertEquals("dog", obj);
     }
 
+    public static double minim(double[] tab) {
+        double min = Float.MAX_VALUE;
+        for (int i = 0; i < tab.length; i++) {
+            if (min > tab[i]) {
+                min = tab[i];
+            }
+        }
+        return min;
+    }
+
+    public void testJIRA113() {
+        assertEquals(true, test("org.mvel.tests.main.CoreConfidenceTests.minim( {456.2, 2.3} ) == 2.3"));
+    }
+
 
 }
 

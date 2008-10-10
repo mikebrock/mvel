@@ -105,10 +105,10 @@ public class AbstractParser implements Serializable {
         LITERALS.put("char", Character.class);
 
         LITERALS.put("Double", Double.class);
-        LITERALS.put("double", double.class);
+        LITERALS.put("double", Double.class);
 
         LITERALS.put("Float", Float.class);
-        LITERALS.put("float", float.class);
+        LITERALS.put("float", Float.class);
 
         LITERALS.put("Math", Math.class);
         LITERALS.put("Void", Void.class);
@@ -257,7 +257,6 @@ public class AbstractParser implements Serializable {
                                 ImportNode importNode = new ImportNode(subArray(start, cursor));
                                 if (importNode.isPackageImport()) {
                                     getParserContext().addPackageImport(importNode.getPackageImport());
-                               //     cursor++;
                                 }
                                 else {
                                     getParserContext().addImport(getSimpleClassName(importNode.getImportClass()), importNode.getImportClass());
