@@ -3628,6 +3628,15 @@ public class CoreConfidenceTests extends AbstractTest {
         assertEquals(true, test("org.mvel.tests.main.CoreConfidenceTests.minim( {456.2, 2.3} ) == 2.3"));
     }
 
+    public void testJIRA115() {
+   //     OptimizerFactory.setDefaultOptimizer("ASM");
+        String exp = "results = new java.util.ArrayList(); foreach (element : elements) { if( {1,32769,32767} contains element ) { results.add(element) }  }; results";
+        Map map = new HashMap();
+        map.put("elements", new int[]{1, 32769, 32767});
+        ArrayList result = (ArrayList) MVEL.eval(exp, map);
+
+        assertEquals(3, result.size());
+    }
 
 }
 

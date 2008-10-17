@@ -432,7 +432,7 @@ public class ASMAccessorOptimizer extends AbstractOptimizer implements AccessorO
         else if (LITERALS.containsKey(property)) {
             Object lit = LITERALS.get(property);
 
-            if (lit instanceof Class) {
+            if (lit instanceof Class) {                                  
                 ldcClassConstant((Class) lit);
             }
 
@@ -1750,9 +1750,9 @@ public class ASMAccessorOptimizer extends AbstractOptimizer implements AccessorO
                     break;
             }
         }
-        else if (index < Byte.MAX_VALUE) {
-            assert debug("BIPUSH " + index);
-            mv.visitIntInsn(BIPUSH, index);
+        else if (index > Short.MAX_VALUE) {
+            assert debug("LDC " + index);
+            mv.visitLdcInsn(index);
         }
         else {
             assert debug("SIPUSH " + index);
