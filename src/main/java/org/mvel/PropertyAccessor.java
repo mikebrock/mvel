@@ -216,8 +216,6 @@ public class PropertyAccessor {
                 }
                 else if (curr.getClass().isArray()) {
                     Array.set(curr, eval(ex, this.ctx, this.variableFactory, Integer.class), convert(value, getBaseComponentType(curr.getClass())));
-
-                    //           ((Object[]) curr)[eval(ex, this.ctx, this.variableFactory, Integer.class)] = convert(value, ctx.getClass().getComponentType());
                 }
 
                 else {
@@ -232,8 +230,8 @@ public class PropertyAccessor {
 
             Member member = checkWriteCache(curr.getClass(), tk == null ? 0 : tk.hashCode());
             if (member == null) {
-                addWriteCache(curr.getClass(), tk == null ? 0 : tk.hashCode(), (member = getFieldOrWriteAccessor(curr.getClass(), tk)));
-            }
+                addWriteCache(curr.getClass(), tk.hashCode(),
+                        (member = value != null ? getFieldOrWriteAccessor(curr.getClass(), tk, value.getClass()) : getFieldOrWriteAccessor(curr.getClass(), tk)));            }
 
             if (member instanceof Field) {
                 Field fld = (Field) member;

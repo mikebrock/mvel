@@ -3432,6 +3432,16 @@ public class CoreConfidenceTests extends AbstractTest {
         public boolean singleCalled;
         public boolean arrayCalled;
 
+        private String[] regkeys;
+
+        public void setRegkeys(String[] regkeys) {
+            this.regkeys = regkeys;
+        }
+
+        public void setRegkeys(String regkey) {
+            this.regkeys = regkey.split(",");
+        }
+
         public void methodForTest(String string) {
             System.out.println("sigle param method called!");
             singleCalled = true;
@@ -3629,13 +3639,19 @@ public class CoreConfidenceTests extends AbstractTest {
     }
 
     public void testJIRA115() {
-   //     OptimizerFactory.setDefaultOptimizer("ASM");
+        //     OptimizerFactory.setDefaultOptimizer("ASM");
         String exp = "results = new java.util.ArrayList(); foreach (element : elements) { if( {1,32769,32767} contains element ) { results.add(element) }  }; results";
         Map map = new HashMap();
         map.put("elements", new int[]{1, 32769, 32767});
         ArrayList result = (ArrayList) MVEL.eval(exp, map);
 
         assertEquals(3, result.size());
+    }
+
+
+    public void testJIRA103() throws Exception {
+        MvelContext mvelContext = new MvelContext();
+        MVEL.setProperty(mvelContext, "regkeys", "s");
     }
 
 }

@@ -1,6 +1,7 @@
 package org.mvel.util;
 
 
+import org.mvel.DataConversion;
 import org.mvel.DataTypes;
 
 import static java.lang.Double.parseDouble;
@@ -52,6 +53,19 @@ public class PropertyTools {
 
         return null;
 
+    }
+
+    public static Method getSetter(Class clazz, String property, Class type) {
+        property = ReflectionUtil.getSetter(property);
+
+        for (Method meth : clazz.getMethods()) {
+            if ((meth.getModifiers() & PUBLIC) != 0 && meth.getParameterTypes().length == 1 &&
+                    property.equals(meth.getName()) && DataConversion.canConvert(meth.getParameterTypes()[0], type)) {
+                return meth;
+            }
+        }
+
+        return null;
     }
 
     public static boolean hasGetter(Field field) {
@@ -138,6 +152,17 @@ public class PropertyTools {
 
         return getSetter(clazz, property);
     }
+
+    public static Member getFieldOrWriteAccessor(Class clazz, String property, Class type) {
+         for (Field f : clazz.getFields()) {
+             if (property.equals(f.getName()) && DataConversion.canConvert(f.getType(), type)) {
+                 return f;
+             }
+         }
+
+         return getSetter(clazz, property, type);
+     }
+
 
 
     public static boolean isNumeric(Object val) {
