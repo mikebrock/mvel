@@ -106,7 +106,6 @@ public class JDK14CompatabilityMath implements MathProcessor {
     private static Object doOperationNonNumeric(Object val1, int operation, Object val2) {
         switch (operation) {
             case Operator.ADD:
-            	System.out.println("<" + valueOf(val1) + "> + <" + valueOf(val2) + ">");
                 return valueOf(val1) + valueOf(val2);
 
             case Operator.EQUAL:
